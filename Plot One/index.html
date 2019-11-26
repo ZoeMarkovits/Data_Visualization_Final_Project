@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<head>
+  <meta charset='utf-8'>
+  <script src='https://d3js.org/d3.v4.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js'></script>
+  <style>
+    .axis-bottom .domain {
+      display: none;
+    }
+
+    .n {
+      opacity: .8;
+      font-size: 10px;
+      margin-left: 4px;
+      font-family: sans-serif;
+      color: white;
+      padding: 6px;
+      background-color: #3C3176;
+    }
+    .containerl {
+      float: left;
+    }
+    .containerR {
+      float: right;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="containerl" id="chart1">
+    <script>
+
+      const data = [
+      {
+        'Time': 'Morning',
+        'Education': 219,
+        'News': 45,
+        'Social Media': 166,
+        'Streaming': 50,
+
+      },
+      {
+        'Time': 'Afternoon',
+        'Education': 641,
+        'News': 32,
+        'Social Media': 49,
+        'Streaming': 83,
+      },
+      {
+        'Time': 'Evening',
+        'Education': 386,
+        'News': 21,
+        'Social Media': 32,
+        'Streaming': 42,
+      },
+      {
+        'Time': 'Night',
+        'Education': 147,
+        'News': 5,
+        'Social Media': 12,
+        'Streaming': 19,
+      },
+      ];
+
+      const keys = Object.keys(data[0]).slice(1);
+
+      const tip = d3.tip().html(d=> d.value);
+
+      const margin = {
+        top: 40,
+        right: 80,
+        bottom: 20,
+        left: 30
+      },
+      width = 650,
+      height = 400,
+      innerWidth = width - margin.left - margin.right,
+      innerHeight = height - margin.top - margin.bottom,
+      svg = d3.select('body').append('svg').attr('width', width).attr('height', height)
+      g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+      svg.call(tip)
+
+      const x0 = d3.scaleBand()
+      .rangeRound([0, innerWidth])
+      .paddingInner(.1);
+
+      const x1 = d3.scaleBand()
+      .padding(.05);
+
+      const y = d3.scaleLinear()
+      .rangeRound([innerHeight, 0]);
+
+      const z = d3.scaleOrdinal()
+      .range(["#cc0099", "#ffcc5c", "#FF9900", "#F65314"]);
+
+      x0.domain(data.map(d => d.Time));
+      x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+      y.domain([0, d3.max(data, d => d3.max(keys, key=> d[key]))]).nice();
+
+      g.append('g')
+      .selectAll('g')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('transform', d => 'translate(' + x0(d.Time) + ',0)')
+      .selectAll('rect')
+      .data(d => keys.map(key => {return {key: key, value: d[key]}}))
+      .enter().append('rect')
+      .attr('x', d => x1(d.key))
+      .attr('y', d => y(d.value))
+      .attr('width', x1.bandwidth())
+      .attr('height', d => innerHeight - y(d.value))
+      .attr('fill', d =>  z(d.key))
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      g.append('g')
+      .attr('class', 'axis-bottom')
+      .attr('transform', 'translate(0,' + innerHeight + ')')
+      .call(d3.axisBottom(x0));
+
+      g.append('g')
+      .attr('class', 'axis-left')
+      .call(d3.axisLeft(y).ticks(null, 's'))
+      .append('text')
+      .attr('x', 10)
+      .attr('y', y(y.ticks().pop()) + 10)
+      .attr('dy', '0.32em')
+      .attr('fill', '#000')
+      .style('transform', 'rotate(-90deg)')
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'end')
+      .text('Website Views');
+
+      g.append("text")
+      .attr("x", (width / 2.5))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Cairo");
+
+      const legend = g.append('g')
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .selectAll('g')
+      .data(keys.slice().reverse())
+      .enter().append('g')
+      .attr('transform', (d, i) => 'translate(0,' + i * 20 + ')');
+
+      legend.append('rect')
+      .attr('x', innerWidth - 19)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', z);
+
+      legend.append('text')
+      .attr('x', innerWidth - 32)
+      .attr('y', 6)
+      .attr('dy', '0.32em')
+      .text(d => d);
+
+    </script>
+  </div>
+  <div class="containerR" id="chart2">
+    <script>
+
+      const data2 = [
+      {
+        'Time': 'Morning',
+        'Education': 328,
+        'News': 167,
+        'Social Media': 32,
+        'Streaming': 42,
+
+      },
+      {
+        'Time': 'Afternoon',
+        'Education': 431,
+        'News': 173,
+        'Social Media': 38,
+        'Streaming': 38,
+      },
+      {
+        'Time': 'Evening',
+        'Education': 61,
+        'News': 25,
+        'Social Media': 4,
+        'Streaming': 74,
+      },
+      {
+        'Time': 'Night',
+        'Education': 147,
+        'News': 5,
+        'Social Media': 12,
+        'Streaming': 19,
+      },
+      ];
+
+  //      const keys = Object.keys(data2[0]).slice(1);
+
+  //    const tip = d3.tip().html(d=> d.value);
+
+      const margin2 = {
+        top: 40,
+        right: 80,
+        bottom: 20,
+        left: 34
+      },
+  //      width = 800,
+  //    height = 480,
+      innerWidth2 = width - margin2.left - margin2.right,
+      innerHeight2 = height - margin2.top - margin2.bottom,
+      svg2 = d3.select('body').append('svg').attr('width', width).attr('height', height)
+      g2 = svg2.append('g').attr('transform', `translate(${margin2.left}, ${margin2.top})`);
+
+  //      svg2.call(tip)
+  //
+        const x02 = d3.scaleBand()
+        .rangeRound([0, innerWidth2])
+        .paddingInner(.1);
+  //
+  //      const x1 = d3.scaleBand()
+  //      .padding(.05);
+  //
+        const y2 = d3.scaleLinear()
+        .rangeRound([innerHeight2, 0]);
+  //
+  //      const z = d3.scaleOrdinal()
+  //      .range(["#cc0099", "#ffcc5c", "#FF9900", "#F65314"]);
+  //
+      x02.domain(data2.map(d => d.Time));
+      x1.domain(keys).rangeRound([0, x02.bandwidth()]);
+      y2.domain([0, d3.max(data2, d => d3.max(keys, key=> d[key]))]).nice();
+
+      g2.append('g')
+      .selectAll('g')
+      .data(data2)
+      .enter()
+      .append('g')
+      .attr('transform', d => 'translate(' + x0(d.Time) + ',0)')
+      .selectAll('rect')
+      .data(d => keys.map(key => {return {key: key, value: d[key]}}))
+      .enter().append('rect')
+      .attr('x', d => x1(d.key))
+      .attr('y', d => y(d.value))
+      .attr('width', x1.bandwidth())
+      .attr('height', d => innerHeight2 - y(d.value))
+      .attr('fill', d =>  z(d.key))
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      g2.append('g')
+      .attr('class', 'axis-bottom')
+      .attr('transform', 'translate(0,' + innerHeight2 + ')')
+      .call(d3.axisBottom(x0));
+
+      g2.append('g')
+      .attr('class', 'axis-left')
+      .call(d3.axisLeft(y).ticks(null, 's'))
+      .append('text')
+      .attr('x', 10)
+      .attr('y', y(y2.ticks().pop()) - 90)
+      .attr('dy', '0.32em')
+      .attr('fill', '#000')
+      .style('transform', 'rotate(-90deg)')
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'end')
+      .text('Website Views');
+
+      g2.append("text")
+      .attr("x", (width / 2.5))
+      .attr("y", 0 - (margin2.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Zoe");
+
+      const legend2 = g2.append('g')
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .selectAll('g')
+      .data(keys.slice().reverse())
+      .enter().append('g')
+      .attr('transform', (d, i) => 'translate(0,' + i * 20 + ')');
+
+      legend2.append('rect')
+      .attr('x', innerWidth2 - 19)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', z);
+
+      legend2.append('text')
+      .attr('x', innerWidth2 - 32)
+      .attr('y', 6)
+      .attr('dy', '0.32em')
+      .text(d => d);
+
+    </script>
+  </div>
+  <div class="containerl" id="chart3">
+    <script>
+
+      const data3 = [
+      {
+        'Time': 'Morning',
+        'Education': 146,
+        'News': 0,
+        'Social Media': 17,
+        'Streaming': 15,
+
+      },
+      {
+        'Time': 'Afternoon',
+        'Education': 212,
+        'News': 0,
+        'Social Media': 11,
+        'Streaming': 54,
+      },
+      {
+        'Time': 'Evening',
+        'Education': 290,
+        'News': 0,
+        'Social Media': 19,
+        'Streaming': 44,
+      },
+      {
+        'Time': 'Night',
+        'Education': 131,
+        'News': 0,
+        'Social Media': 13,
+        'Streaming': 32,
+      },
+      ];
+
+  //      const keys = Object.keys(data3[0]).slice(1);
+
+  //    const tip = d3.tip().html(d=> d.value);
+
+      const margin3 = {
+        top: 40,
+        right: 80,
+        bottom: 20,
+        left: 34
+      },
+      width3 = 650,
+      height3 = 400,
+      innerWidth3 = width3 - margin3.left - margin3.right,
+      innerHeight3 = height3 - margin3.top - margin3.bottom,
+      svg3 = d3.select('body').append('svg').attr('width', width3).attr('height', height3)
+      g3 = svg3.append('g').attr('transform', `translate(${margin3.left}, ${margin3.top})`);
+
+  //      svg3.call(tip)
+  //
+        const x03 = d3.scaleBand()
+        .rangeRound([0, innerWidth3])
+        .paddingInner(.1);
+  //
+  //      const x1 = d3.scaleBand()
+  //      .padding(.05);
+  //
+        const y3 = d3.scaleLinear()
+        .rangeRound([innerHeight3, 0]);
+  //
+  //      const z = d3.scaleOrdinal()
+  //      .range(["#cc0099", "#ffcc5c", "#FF9900", "#F65314"]);
+  //
+      x03.domain(data3.map(d => d.Time));
+      x1.domain(keys).rangeRound([0, x03.bandwidth()]);
+      y3.domain([0, d3.max(data3, d => d3.max(keys, key=> d[key]))]).nice();
+
+      g3.append('g')
+      .selectAll('g')
+      .data(data3)
+      .enter()
+      .append('g')
+      .attr('transform', d => 'translate(' + x0(d.Time) + ',0)')
+      .selectAll('rect')
+      .data(d => keys.map(key => {return {key: key, value: d[key]}}))
+      .enter().append('rect')
+      .attr('x', d => x1(d.key))
+      .attr('y', d => y(d.value))
+      .attr('width', x1.bandwidth())
+      .attr('height', d => innerHeight3 - y(d.value))
+      .attr('fill', d =>  z(d.key))
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      g3.append('g')
+      .attr('class', 'axis-bottom')
+      .attr('transform', 'translate(0,' + innerHeight3 + ')')
+      .call(d3.axisBottom(x0));
+
+      g3.append('g')
+      .attr('class', 'axis-left')
+      .call(d3.axisLeft(y).ticks(null, 's'))
+      .append('text')
+      .attr('x', 10)
+      .attr('y', y(y3.ticks().pop()) - 170)
+      .attr('dy', '0.32em')
+      .attr('fill', '#000')
+      .style('transform', 'rotate(-90deg)')
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'end')
+      .text('Website Views');
+
+      g3.append("text")
+      .attr("x", (width3 / 2.5))
+      .attr("y", 0 - (margin3.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Kei");
+
+      const legend3 = g3.append('g')
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .selectAll('g')
+      .data(keys.slice().reverse())
+      .enter().append('g')
+      .attr('transform', (d, i) => 'translate(0,' + i * 20 + ')');
+
+      legend3.append('rect')
+      .attr('x', innerWidth3 - 19)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', z);
+
+      legend3.append('text')
+      .attr('x', innerWidth3 - 32)
+      .attr('y', 6)
+      .attr('dy', '0.32em')
+      .text(d => d);
+
+    </script>
+  </div>
+  <div class="containerl" id="chart4">
+    <script>
+
+      const data4 = [
+      {
+        'Time': 'Morning',
+        'Education': 232,
+        'News': 30,
+        'Social Media': 98,
+        'Streaming': 246,
+
+      },
+      {
+        'Time': 'Afternoon',
+        'Education': 300,
+        'News': 33,
+        'Social Media': 48,
+        'Streaming': 297,
+      },
+      {
+        'Time': 'Evening',
+        'Education': 267,
+        'News': 15,
+        'Social Media': 47,
+        'Streaming': 183,
+      },
+      {
+        'Time': 'Night',
+        'Education': 180,
+        'News': 21,
+        'Social Media': 94,
+        'Streaming': 348,
+      },
+      ];
+
+  //      const keys = Object.keys(data3[0]).slice(1);
+
+  //    const tip = d3.tip().html(d=> d.value);
+
+      const margin4 = {
+        top: 40,
+        right: 80,
+        bottom: 20,
+        left: 34
+      },
+      width4 = 650,
+      height4 = 400,
+      innerWidth4 = width4 - margin4.left - margin4.right,
+      innerHeight4 = height4 - margin4.top - margin4.bottom,
+      svg4 = d3.select('body').append('svg').attr('width', width3).attr('height', height3)
+      g4 = svg4.append('g').attr('transform', `translate(${margin4.left}, ${margin4.top})`);
+
+  //      svg4.call(tip)
+  //
+        const x04 = d3.scaleBand()
+        .rangeRound([0, innerWidth3])
+        .paddingInner(.1);
+  //
+  //      const x1 = d3.scaleBand()
+  //      .padding(.05);
+  //
+        const y4 = d3.scaleLinear()
+        .rangeRound([innerHeight3, 0]);
+  //
+  //      const z = d3.scaleOrdinal()
+  //      .range(["#cc0099", "#ffcc5c", "#FF9900", "#F65314"]);
+  //
+      x04.domain(data4.map(d => d.Time));
+      x1.domain(keys).rangeRound([0, x04.bandwidth()]);
+      y4.domain([0, d3.max(data3, d => d3.max(keys, key=> d[key]))]).nice();
+
+      g4.append('g')
+      .selectAll('g')
+      .data(data4)
+      .enter()
+      .append('g')
+      .attr('transform', d => 'translate(' + x0(d.Time) + ',0)')
+      .selectAll('rect')
+      .data(d => keys.map(key => {return {key: key, value: d[key]}}))
+      .enter().append('rect')
+      .attr('x', d => x1(d.key))
+      .attr('y', d => y(d.value))
+      .attr('width', x1.bandwidth())
+      .attr('height', d => innerHeight4 - y(d.value))
+      .attr('fill', d =>  z(d.key))
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      g4.append('g')
+      .attr('class', 'axis-bottom')
+      .attr('transform', 'translate(0,' + innerHeight4 + ')')
+      .call(d3.axisBottom(x0));
+
+      g4.append('g')
+      .attr('class', 'axis-left')
+      .call(d3.axisLeft(y).ticks(null, 's'))
+      .append('text')
+      .attr('x', 10)
+      .attr('y', y(y4.ticks().pop()) - 170)
+      .attr('dy', '0.32em')
+      .attr('fill', '#000')
+      .style('transform', 'rotate(-90deg)')
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'end')
+      .text('Website Views');
+
+      g4.append("text")
+      .attr("x", (width4 / 2.5))
+      .attr("y", 0 - (margin4.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Steven");
+
+      const legend4 = g4.append('g')
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .selectAll('g')
+      .data(keys.slice().reverse())
+      .enter().append('g')
+      .attr('transform', (d, i) => 'translate(0,' + i * 20 + ')');
+
+      legend4.append('rect')
+      .attr('x', innerWidth4 - 19)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', z);
+
+      legend4.append('text')
+      .attr('x', innerWidth4 - 32)
+      .attr('y', 6)
+      .attr('dy', '0.32em')
+      .text(d => d);
+
+    </script>
+  </div>
+</body>

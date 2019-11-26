@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="multiline.css">
+    <script src="https://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+<body>
+<div class="chart-wrapper" id="chart-line1"></div>
+
+<script type="text/javascript">
+    d3.csv('plot_three.csv', function(error, data) {
+    data.forEach(function (d) {
+        d.TimeStamp = +d.TimeStamp;
+        console.log(d.TimeStamp)
+        d.Steven = +d.Steven;
+        d.Kei = +d.Kei;
+        d.Cairo = +d.Cairo;
+        d.Zoe = +d.Zoe;
+    });
+
+    var chart = makeLineChart(data, 'TimeStamp', {
+        'Steven': {column: 'Steven'},
+        'Kei': {column: 'Kei'},
+        'Cairo': {column: 'Cairo'},
+        'Zoe': {column: 'Zoe'}
+    }, {xAxis: 'Day', yAxis: 'Amount'});
+    chart.bind("#chart-line1");
+    chart.render();
+console.log("hello")
+});
+</script>
+<script src="multiline.js" charset="utf-8"></script>
+</body>
+</html>
