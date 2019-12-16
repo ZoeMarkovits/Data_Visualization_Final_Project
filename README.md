@@ -17,6 +17,9 @@ Data Visualization Group Project
 * D3 line graph that investigates total website counts over time
 * Index.html file is included
 
-## Plot Four
+## Plot Four:
 * D3 stream graph that investigates total website counts over time
 * Index.html file is included
+
+## Multi-Coordinate Views:
+* A multi-coordinated view plot that has all of our individual plots together on one page with the ability to toggle between and interact with all of the visualizations

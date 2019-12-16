@@ -1,0 +1,86 @@
+[
+    {
+        "categorie": "Morning",
+        "values": [
+            {
+                "value": 219,
+                "rate": "Education"
+            },
+            {
+                "value": 45,
+                "rate": "News"
+            },
+            {
+                "value": 166,
+                "rate": "Social Media"
+            },
+            {
+                "value": 50,
+                "rate": "Streaming"
+            }
+        ]
+    },
+    {
+        "categorie": "Afternoon",
+        "values": [
+          {
+              "value": 641,
+              "rate": "Education"
+          },
+          {
+              "value": 32,
+              "rate": "News"
+          },
+          {
+              "value": 49,
+              "rate": "Social Media"
+          },
+          {
+              "value": 83,
+              "rate": "Streaming"
+          }
+        ]
+    },
+    {
+        "categorie": "Evening",
+        "values": [
+          {
+              "value": 386,
+              "rate": "Education"
+          },
+          {
+              "value": 21,
+              "rate": "News"
+          },
+          {
+              "value": 32,
+              "rate": "Social Media"
+          },
+          {
+              "value": 42,
+              "rate": "Streaming"
+          }
+        ]
+    },
+    {
+        "categorie": "Night",
+        "values": [
+          {
+              "value": 147,
+              "rate": "Education"
+          },
+          {
+              "value": 5,
+              "rate": "News"
+          },
+          {
+              "value": 12,
+              "rate": "Social Media"
+          },
+          {
+              "value": 19,
+              "rate": "Streaming"
+          }
+        ]
+    }
+]
