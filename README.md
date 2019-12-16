@@ -22,4 +22,4 @@ Data Visualization Group Project
 * Index.html file is included
 
 ## Multi-Coordinate Views:
-* A multi-coordinated view plot that has all of our individual plots together on one page with the ability to toggle between and interact with all of the visualizations
+* A multi-coordinated view plot that has all of our individual plots together on one page with the ability to toggle between and interact with all of the visualizations 
